@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+{% if data %}
+    {% for d in data %}
+        <button type="submit" id="button_{{ d.id }}" value="{{ d.real }}" style="border:none"><img id="image_{{ d.id }}" src="{{ d.img_url }}" width="400" height="400"></button>
+    {% endfor %}
+
+    <p id="demo"></p>
+
+    <script>
+        let correct = 0;
+        let incorrect = 0;
+
+        b1 = document.getElementById("button_1");
+        b2 = document.getElementById("button_2");
+
+        b1.onclick = calculateButton1;
+        b2.onclick = calculateButton2;
+
+        function calculateButton1() {
+            if (b1.value == 1) {
+                incorrect++;
+            }
+            else {
+                correct++;
+            }
+            document.getElementById("demo").innerHTML = correct + " - " + incorrect;
+            getNewURLs();
+        }
+
+        function calculateButton2() {
+            if (b2.value == 1) {
+                incorrect++;
+            }
+            else {
+                correct++;
+            }
+            document.getElementById("demo").innerHTML = correct + " - " + incorrect;
+            getNewURLs();
+        }
+
+        function getNewURLs() {
+            fetch('/index')
+                .then(res => {
+                    return res.json()
+                })
+                .then(new_data => {
+                    document.getElementById("image_1").src = new_data[0]["img_url"];
+                    b1.value = new_data[0]["real"];
+                    document.getElementById("image_2").src = new_data[1]["img_url"];
+                    b2.value = new_data[1]["real"];
+                });
+        }
+    </script>
+{% endif %}
+</body>
+</html>
