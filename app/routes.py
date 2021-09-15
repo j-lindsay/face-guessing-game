@@ -3,16 +3,22 @@ from flask import render_template, request, jsonify
 
 import requests
 import random
+import os
 
 def get_fake_image_url():
-    r = requests.get("https://thispersondoesnotexist.com/image", headers={'User-Agent': 'My User Agent 1.0'}).content
-    prefix = str(random.randrange(1, 10000))
-    filename = prefix + '.jpeg'
+    try:
+        dir = "S:/face-guessing-game/app/static/"
+        for f in os.listdir(dir):
+            os.remove(os.path.join(dir, f))
+    except:
+        r = requests.get("https://thispersondoesnotexist.com/image", headers={'User-Agent': 'My User Agent 1.0'}).content
+        prefix = str(random.randrange(1, 10000))
+        filename = prefix + '.jpeg'
 
-    with open("S:/face-guessing-game/app/static/" + filename, "wb") as f:
-        f.write(r)
+        with open("S:/face-guessing-game/app/static/" + filename, "wb") as f:
+            f.write(r)
 
-    return '../static/' + filename
+        return '../static/' + filename
 
 def get_real_image_url():
     prefix = str(random.randrange(69800, 70000))

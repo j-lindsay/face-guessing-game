@@ -15,6 +15,7 @@
     <p id="demo"></p>
 
     <script>
+        console.log("at the beginning");
         let correct = 0;
         let incorrect = 0;
 
@@ -31,6 +32,7 @@
             else {
                 correct++;
             }
+            console.log("inside button1");
             document.getElementById("demo").innerHTML = correct + " - " + incorrect;
             getNewURLs();
         }
@@ -42,11 +44,13 @@
             else {
                 correct++;
             }
+            console.log("inside button2");
             document.getElementById("demo").innerHTML = correct + " - " + incorrect;
             getNewURLs();
         }
 
         function getNewURLs() {
+            console.log("inside fetch loop");
             fetch('/index')
                 .then(res => {
                     return res.json()
