@@ -4,16 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <title>Document</title>
 </head>
 <body>
-{% if data %}
-    {% for d in data %}
-        <button type="submit" id="button_{{ d.id }}" value="{{ d.real }}" style="border:none"><img id="image_{{ d.id }}" src="{{ d.img_url }}" width="400" height="400"></button>
-    {% endfor %}
-
-    <p id="demo"></p>
-
+    <div id="container" style="opacity: 1">
+    <p id="demo">Score: 0 - 0</p>
+    {% if data %}
+        {% for d in data %}
+        <div style="margin:3em;">
+            <button type="submit" id="button_{{ d.id }}" 
+            value="{{ d.real }}" style="border:none">
+                <img id="image_{{ d.id }}" src="{{ d.img_url }}" width="400" height="400">
+            </button>
+        </div>
+        {% endfor %}
+        
+        
+    </div>
+    <div class="spinner-border text-primary" id="loading" role="status" style="position: fixed; left: 50%; top: 50%; visibility: hidden;" ></div>
+    
+    <script src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script>
         console.log("at the beginning");
         let correct = 0;
@@ -21,35 +34,48 @@
 
         b1 = document.getElementById("button_1");
         b2 = document.getElementById("button_2");
+        spinner = document.getElementById("loading");
 
         b1.onclick = calculateButton1;
         b2.onclick = calculateButton2;
 
         function calculateButton1() {
+            b1.disabled = 'disabled';
+            b2.disabled = 'disabled';
             if (b1.value == 1) {
                 incorrect++;
             }
             else {
                 correct++;
             }
+            
             console.log("inside button1");
-            document.getElementById("demo").innerHTML = correct + " - " + incorrect;
+            document.getElementById("demo").innerHTML = "Score: " + correct + " - " + incorrect;
             getNewURLs();
+            
+            
         }
 
         function calculateButton2() {
+            b1.disabled = 'disabled';
+            b2.disabled = 'disabled';
             if (b2.value == 1) {
                 incorrect++;
             }
             else {
                 correct++;
             }
+            
             console.log("inside button2");
-            document.getElementById("demo").innerHTML = correct + " - " + incorrect;
+            document.getElementById("demo").innerHTML = "Score: " + correct + " - " + incorrect;
             getNewURLs();
+            
+            
         }
 
         function getNewURLs() {
+            document.getElementById("container").style.opacity = 0.2;
+            spinner.style.visibility = 'visible';
             console.log("inside fetch loop");
             fetch('/index')
                 .then(res => {
@@ -60,9 +86,14 @@
                     b1.value = new_data[0]["real"];
                     document.getElementById("image_2").src = new_data[1]["img_url"];
                     b2.value = new_data[1]["real"];
+                    $(b1).removeAttr("disabled");
+                    $(b2).removeAttr("disabled");
+                    spinner.style.visibility = 'hidden';
+                    document.getElementById("container").style.opacity = 1;
                 });
         }
     </script>
-{% endif %}
+    {% endif %}
 </body>
 </html>
+
