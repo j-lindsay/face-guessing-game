@@ -9,21 +9,32 @@
 
     <title>Document</title>
 </head>
+
 <body>
-    <div id="container" style="opacity: 1">
-    <p id="demo">Score: 0 - 0</p>
-    {% if data %}
-        {% for d in data %}
-        <div style="margin:3em;">
-            <button type="submit" id="button_{{ d.id }}" 
-            value="{{ d.real }}" style="border:none">
-                <img id="image_{{ d.id }}" src="{{ d.img_url }}" width="400" height="400">
-            </button>
+    <div class="container-fluid">
+        <div id="page" class="row" style="opacity: 1;">
+
+            <div class="col-md-3 order-1" style="background: chartreuse;">hello</div>
+
+            {% if data %}
+            <div class="col-md-6 order-6 text-center">
+                <h1 id="instruction" style="text-align: center;">Guess The Real Person</h1>
+                <p id="demo" style="text-align: center; font-size:28px;">Score: 0 - 0</p>
+                {% for d in data %}
+                <div style="margin:3em;">
+                    <button type="submit" id="button_{{ d.id }}" class="game-buttons"
+                    value="{{ d.real }}" style="border: none; width: auto; height: auto;">
+                        <img id="image_{{ d.id }}" src="{{ d.img_url }}" style="width: 100%; height: 100%;">
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-3 order-12" style="background-color: blueviolet;">so wassup?!</div>    
+            
         </div>
-        {% endfor %}
-        
-        
     </div>
+
     <div class="spinner-border text-primary" id="loading" role="status" style="position: fixed; left: 50%; top: 50%; visibility: hidden;" ></div>
     
     <script src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -31,6 +42,7 @@
         console.log("at the beginning");
         let correct = 0;
         let incorrect = 0;
+        let correctness = "";
 
         b1 = document.getElementById("button_1");
         b2 = document.getElementById("button_2");
@@ -44,13 +56,15 @@
             b2.disabled = 'disabled';
             if (b1.value == 1) {
                 incorrect++;
+                correctness = "Incorrect!";
             }
             else {
                 correct++;
+                correctness = "Correct!";
             }
             
             console.log("inside button1");
-            document.getElementById("demo").innerHTML = "Score: " + correct + " - " + incorrect;
+            document.getElementById("demo").innerHTML = correctness + " Score: " + correct + " - " + incorrect;
             getNewURLs();
             
             
@@ -61,20 +75,22 @@
             b2.disabled = 'disabled';
             if (b2.value == 1) {
                 incorrect++;
+                correctness = "Incorrect!";
             }
             else {
                 correct++;
+                correctness = "Correct!";
             }
             
             console.log("inside button2");
-            document.getElementById("demo").innerHTML = "Score: " + correct + " - " + incorrect;
+            document.getElementById("demo").innerHTML = correctness + " Score: " + correct + " - " + incorrect;
             getNewURLs();
             
             
         }
 
         function getNewURLs() {
-            document.getElementById("container").style.opacity = 0.2;
+            document.getElementById("page").style.opacity = 0.2;
             spinner.style.visibility = 'visible';
             console.log("inside fetch loop");
             fetch('/index')
@@ -89,7 +105,7 @@
                     $(b1).removeAttr("disabled");
                     $(b2).removeAttr("disabled");
                     spinner.style.visibility = 'hidden';
-                    document.getElementById("container").style.opacity = 1;
+                    document.getElementById("page").style.opacity = 1;
                 });
         }
     </script>

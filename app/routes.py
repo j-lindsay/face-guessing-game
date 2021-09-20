@@ -21,7 +21,7 @@ def get_fake_image_url():
         return '../static/' + filename
 
 def get_real_image_url():
-    prefix = str(random.randrange(69800, 70000))
+    prefix = str(random.randrange(69600, 70000))
     filename = prefix + '.png'
     return filename
 
