@@ -7,7 +7,7 @@ import os
 
 def get_fake_image_url():
     try:
-        dir = "S:/face-guessing-game/app/static/"
+        dir = "/face-guessing-game/app/static/"
         for f in os.listdir(dir):
             os.remove(os.path.join(dir, f))
     except:
@@ -15,7 +15,7 @@ def get_fake_image_url():
         prefix = str(random.randrange(1, 10000))
         filename = prefix + '.jpeg'
 
-        with open("S:/face-guessing-game/app/static/" + filename, "wb") as f:
+        with open("/face-guessing-game/app/static/" + filename, "wb") as f:
             f.write(r)
 
         return '../static/' + filename
