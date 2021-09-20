@@ -14,7 +14,12 @@
     <div class="container-fluid">
         <div id="page" class="row" style="opacity: 1;">
 
-            <div class="col-md-3 order-1" style="background: chartreuse;">hello</div>
+            <div class="col-md-3 order-1">
+                <p style="text-align: center;"> <a href="https://github.com/j-lindsay/face-guessing-game">Source code for the site.</a> 
+                The computer generated images come from the <a href="https://thispersondoesnotexist.com/image">thispersondoesnotexist.com</a> 
+                API which uses <a href="https://github.com/NVlabs/stylegan">Nvidia's StyleGAN</a>, and the real images come 
+                from <a href="https://github.com/NVlabs/ffhq-dataset">Nvidia's Flickr-Faces-HQ Dataset</a>.</p>
+            </div>
 
             {% if data %}
             <div class="col-md-6 order-6 text-center">
@@ -30,7 +35,11 @@
                 {% endfor %}
             </div>
 
-            <div class="col-md-3 order-12" style="background-color: blueviolet;">so wassup?!</div>    
+            <div class="col-md-3 order-12">
+                <img src="../static/examples/gan_diagram.svg" >
+                <p style="text-align: center;">In our context, the samples are real/generated images. 
+                    Diagram taken from <a href="https://developers.google.com/machine-learning/gan/generator">Google Developers</a>.</p>
+            </div>    
             
         </div>
     </div>
@@ -39,7 +48,6 @@
     
     <script src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script>
-        console.log("at the beginning");
         let correct = 0;
         let incorrect = 0;
         let correctness = "";
@@ -63,11 +71,8 @@
                 correctness = "Correct!";
             }
             
-            console.log("inside button1");
             document.getElementById("demo").innerHTML = correctness + " Score: " + correct + " - " + incorrect;
             getNewURLs();
-            
-            
         }
 
         function calculateButton2() {
@@ -82,17 +87,13 @@
                 correctness = "Correct!";
             }
             
-            console.log("inside button2");
             document.getElementById("demo").innerHTML = correctness + " Score: " + correct + " - " + incorrect;
-            getNewURLs();
-            
-            
+            getNewURLs();                
         }
 
         function getNewURLs() {
             document.getElementById("page").style.opacity = 0.2;
             spinner.style.visibility = 'visible';
-            console.log("inside fetch loop");
             fetch('/index')
                 .then(res => {
                     return res.json()
